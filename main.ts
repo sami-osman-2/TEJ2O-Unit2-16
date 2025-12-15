@@ -2,7 +2,7 @@
  *
  * Created by: Sami Osman
  * Created on: Nov 2025
- * This program uses sensors to detect distance of nearby objects, if too close, it sends message to another Micro:Bit.
+ * This program uses sensors to detect distance of nearby objects, if too close, it sends a message to another Micro:Bit.
  */
 
 radio.setGroup(7)
@@ -34,3 +34,5 @@ basic.forever(function () {
 
     basic.pause(100)
 })
+
+
