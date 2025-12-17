@@ -2,37 +2,30 @@
  *
  * Created by: Sami Osman
  * Created on: Nov 2025
- * This program uses sensors to detect distance of nearby objects, if too close, it sends a message to another Micro:Bit.
- */
+ * This program using a radio feature
+*/
 
-radio.setGroup(7)
+// variables
+let distanceOfObstacle: number = 0
 
-// distance
-function getDistance() {
-    pins.digitalWritePin(DigitalPin.P8, 0)
-    control.waitMicros(2)
-    pins.digitalWritePin(DigitalPin.P8, 1)
-    control.waitMicros(10)
-    pins.digitalWritePin(DigitalPin.P8, 0)
+// cleanse
+radio.setGroup(39)
+basic.clearScreen()
+basic.showIcon(IconNames.Giraffe)
 
-    let duration = pins.pulseIn(DigitalPin.P9, PulseValue.High)
-    return duration / 58
+// grabs distance
+while (true) {
+   distanceOfObstacle = sonar.ping(
+    DigitalPin.P12, 
+    DigitalPin.P13, 
+    PingUnit.Centimeters
+    )
+    if (distanceOfObstacle < 10) {
+        radio.sendString('Too Close bub')
+    }
+    radio.onReceivedString(function(receivedString: string) {
+        basic.clearScreen()
+        basic.showString(receivedString)
+        basic.showIcon(IconNames.Happy)
+    })
 }
-
-basic.forever(function () {
-    // send
-    let d = getDistance()
-    if (d > 0 && d < 10) {
-        radio.sendString("Too Close")
-    }
-
-    // receive
-    let msg = radio.receiveString()
-    if (msg == "Too Close") {
-        basic.showString("Too Close")
-    }
-
-    basic.pause(100)
-})
-
-
