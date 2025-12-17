@@ -13,6 +13,7 @@ radio.config(group=7)
 trigger = pin8
 echo = pin9
 
+
 def get_distance():
     trigger.write_digital(0)
     sleep(2)
@@ -22,6 +23,7 @@ def get_distance():
 
     duration = echo.read_pulse_us()
     return duration / 58
+
 
 while True:
     # Sender
